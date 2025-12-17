@@ -3,36 +3,37 @@ kind: Deployment
 metadata:
   name: app-gitops
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: demo-gitops
+      app: nginx
   template:
     metadata:
       labels:
-        app: demo-gitops
+        app: nginx
     spec:
       containers:
         - name: nginx
           image: nginx:alpine
           ports:
             - containerPort: 80
-      resources:
+          resources:
             requests:
-              memory: "64Mi"  # Reserva mínima garantizada
-              cpu: "100m"     # 10% de un núcleo (0.1 CPU)
+              memory: "64Mi"
+              cpu: "100m"
             limits:
-              memory: "128Mi" # Tope máximo (si pasa, se reinicia)
-              cpu: "200m"     # Tope máximo (si pasa, va lento)
+              memory: "128Mi"
+              cpu: "200m"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: servicio-gitops
 spec:
-  type: LoadBalancer
   selector:
-    app: demo-gitops
+    app: nginx
   ports:
-    - port: 80
+    - protocol: TCP
+      port: 80
       targetPort: 80
+  type: ClusterIP
