@@ -17,6 +17,13 @@ spec:
           image: nginx:alpine
           ports:
             - containerPort: 80
+      resources:
+            requests:
+              memory: "64Mi"  # Reserva mínima garantizada
+              cpu: "100m"     # 10% de un núcleo (0.1 CPU)
+            limits:
+              memory: "128Mi" # Tope máximo (si pasa, se reinicia)
+              cpu: "200m"     # Tope máximo (si pasa, va lento)
 ---
 apiVersion: v1
 kind: Service
