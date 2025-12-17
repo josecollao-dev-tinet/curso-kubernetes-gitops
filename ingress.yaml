@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-gitops
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: mi-app.local  # <--- Este es el dominio falso que usaremos
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: servicio-gitops  # <--- El nombre de TU servicio existente
+                port:
+                  number: 80
