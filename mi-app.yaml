@@ -31,7 +31,7 @@ metadata:
   name: servicio-gitops
 spec:
   selector:
-    app: nginx
+    app: demo-gitops
   ports:
     - protocol: TCP
       port: 80
