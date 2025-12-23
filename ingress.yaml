@@ -2,16 +2,25 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gitops
+  annotations:
+    # Esta línea es el puente: Le dice al Ingress qué emisor usar
+    cert-manager.io/cluster-issuer: "mi-emisor-local"
 spec:
   ingressClassName: nginx
+  # --- SECCIÓN NUEVA: TLS (Candado) ---
+  tls:
+  - hosts:
+    - mi-app.local
+    secretName: mi-certificado-https # <--- Aquí se guardará la llave secreta generada
+  # ------------------------------------
   rules:
-    - host: mi-app.local  # <--- Este es el dominio falso que usaremos
+    - host: mi-app.local
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: servicio-gitops  # <--- El nombre de TU servicio existente
+                name: servicio-gitops
                 port:
                   number: 80
